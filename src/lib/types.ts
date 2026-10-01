@@ -1,9 +1,9 @@
 /**
  * Modelo de contenido del sitio.
  *
- * Estos tipos reflejan los esquemas que tendrá Sanity en la Fase 2: hoy el
- * contenido vive en `src/content/*` y se lee a través de `src/lib/content.ts`;
- * al conectar Sanity solo cambia esa capa de lectura, no los componentes.
+ * El contenido vive en `src/content/*` y se lee solo a través de
+ * `src/lib/content.ts`. Si en el futuro se suma un panel de administración,
+ * basta con cambiar esa capa de lectura, no los componentes.
  */
 
 export type Imagen = {
@@ -11,20 +11,6 @@ export type Imagen = {
   alt: string;
   width: number;
   height: number;
-};
-
-export type Estacion = "primavera" | "verano" | "otono" | "invierno";
-
-export type Especie = {
-  id: string;
-  nombreComun: string;
-  nombreCientifico: string;
-  foto?: Imagen;
-  /** Color aproximado de la flor, usado en la tabla de floración. */
-  colorFlor?: string;
-  /** Estaciones en que florece. Vacío u omitido = no se muestra en la tabla. */
-  floracion?: Estacion[];
-  nativa?: boolean;
 };
 
 export type AntesDespues = {
@@ -46,7 +32,6 @@ export type Proyecto = {
   galeria?: Imagen[];
   antesDespues?: AntesDespues[];
   planos?: Imagen[];
-  paleta?: Especie[];
 };
 
 export type ServicioSlug = "asesoria" | "mantencion" | "diseno-construccion";

@@ -7,7 +7,7 @@ import { getProyectos } from "@/lib/content";
 export const metadata: Metadata = {
   title: "Proyectos",
   description:
-    "Jardines de bajo consumo hídrico diseñados, construidos y mantenidos por Casa Polen & Arpa Studio: galerías, antes y después, planos y paletas vegetales.",
+    "Jardines de bajo consumo hídrico diseñados, construidos y mantenidos por Casa Polen & Arpa Studio: fotos, antes y después y planos.",
   alternates: { canonical: "/proyectos" },
 };
 
@@ -20,7 +20,7 @@ export default async function Proyectos() {
         nivel="h1"
         etiqueta="Proyectos realizados"
         titulo="Proyectos"
-        bajada="Cada jardín parte del suelo, el clima y el agua disponible. Abre un proyecto para ver su galería, el antes y después, los planos y su paleta vegetal."
+        bajada="Cada jardín parte del suelo, el clima y el agua disponible. Abre un proyecto para ver sus fotos y el antes y después."
       />
 
       <ul className="mt-16 grid gap-x-6 gap-y-14 sm:grid-cols-2 md:mt-24 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-20">

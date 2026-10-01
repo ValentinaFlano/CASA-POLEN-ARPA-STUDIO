@@ -1,14 +1,15 @@
 import type { Imagen, Proyecto } from "@/lib/types";
-import { especies } from "./especies";
 
 /*
  * Proyectos de demostración armados con las imágenes de "Valores 2025".
- * Nombres, ubicaciones y años son provisorios: se reemplazan al cargar los
- * proyectos reales en Sanity.
+ * Nombres, ubicaciones y años son provisorios: reemplázalos por los reales.
+ * Cada proyecto muestra solo los bloques que tenga: galería, antes y después
+ * y planos o renders.
  */
 
 const img = (ruta: string, alt: string, width: number, height: number): Imagen => ({
-  src: `/demo/proyectos/${ruta}`,
+  // Rutas que empiezan con "/" se toman desde public/; el resto, desde las fotos de demostración
+  src: ruta.startsWith("/") ? ruta : `/demo/proyectos/${ruta}`,
   alt,
   width,
   height,
@@ -39,18 +40,6 @@ export const proyectos: Proyecto[] = [
       },
     ],
     planos: [img("cactaceas/plano.jpg", "Plano del jardín con piedra Agatha y gravilla 3/8", 491, 340)],
-    paleta: especies(
-      "opuntia",
-      "aeonium-negro",
-      "aeonium-verde",
-      "echinopsis-oxygona",
-      "echinopsis-pachanoi",
-      "euphorbia",
-      "agave-attenuata",
-      "santolina",
-      "anigozanthos-rosado",
-      "pennisetum-rubrum",
-    ),
   },
   {
     slug: "acceso-florido",
@@ -74,19 +63,7 @@ export const proyectos: Proyecto[] = [
     servicio: "diseno-construccion",
     destacado: true,
     portada: img("parque-costero/portada.jpg", "Render de un parque costero con senderos y plantaciones", 420, 212),
-    planos: [img("parque-costero/lamina.jpg", "Lámina con render, módulos de plantación y fichas de especies", 462, 707)],
-    paleta: especies(
-      "colliguay",
-      "stipa",
-      "lobelia",
-      "verbena-chilena",
-      "malvilla",
-      "palo-de-yegua",
-      "limonium",
-      "erigeron",
-      "alstroemeria-magnifica",
-      "solanum",
-    ),
+    planos: [img("parque-costero/lamina.jpg", "Lámina con render y módulos de plantación", 462, 707)],
   },
   {
     slug: "ladera-de-suculentas",
@@ -110,41 +87,8 @@ export const proyectos: Proyecto[] = [
     portada: img("entrada-sol/render.jpg", "Render del acceso con platabandas plantadas", 356, 217),
     planos: [
       img("entrada-sol/render.jpg", "Render del acceso con platabandas plantadas", 356, 217),
-      img("entrada-sol/plano.jpg", "Planta de arquitectura del paisaje con simbología de especies", 450, 340),
+      img("entrada-sol/plano.jpg", "Planta de arquitectura del paisaje", 450, 340),
     ],
-    paleta: especies(
-      "rhus-crenata",
-      "santolina",
-      "alstroemeria-iris",
-      "dietes-grandiflora",
-      "strelitzia",
-      "verbena-chilena",
-      "verbena-bonariensis",
-      "jazmin",
-    ),
-  },
-  {
-    slug: "oficinas-pucalan",
-    nombre: "Oficinas Pucalán",
-    ubicacion: "Pucalán",
-    resumen: "Paleta vegetal para el perímetro de unas oficinas: gramíneas, perennes y un olivo como hito.",
-    servicio: "diseno-construccion",
-    portada: img("pucalan/lamina.jpg", "Lámina de la paleta vegetal de Oficinas Pucalán", 456, 785),
-    planos: [img("pucalan/lamina.jpg", "Planta, fotos de especies y fechas de floración", 456, 785)],
-    paleta: especies(
-      "rosa-trepadora",
-      "rhus-crenata",
-      "gaura",
-      "stipa-gigante",
-      "ruby-grass",
-      "anigozanthos-lila",
-      "anigozanthos-rosado",
-      "allium",
-      "achillea",
-      "dietes-bicolor",
-      "mioporo",
-      "olivo",
-    ),
   },
   {
     slug: "patio-de-gravilla",

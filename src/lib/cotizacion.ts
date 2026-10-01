@@ -49,3 +49,24 @@ export type EstadoCotizacion =
   | { estado: "inicial" }
   | { estado: "error"; mensaje: string; campos?: Partial<Record<keyof Cotizacion, string>>; valores?: Record<string, string> }
   | { estado: "enviada"; nombre: string };
+
+export const TIPOS_FOTO = ["image/jpeg", "image/png", "image/webp", "image/heic", "image/heif"];
+
+/** Valida los campos y devuelve el primer error de cada uno. */
+export function validarCotizacion(valores: Record<string, string>) {
+  const resultado = esquemaCotizacion.safeParse(valores);
+  if (resultado.success) return { ok: true as const, datos: resultado.data };
+  const campos: Partial<Record<keyof Cotizacion, string>> = {};
+  for (const issue of resultado.error.issues) {
+    const campo = issue.path[0] as keyof Cotizacion;
+    campos[campo] ??= issue.message;
+  }
+  return { ok: false as const, campos };
+}
+
+/** Campos de texto del formulario (sin fotos ni campo trampa). */
+export function valoresDeFormulario(formData: FormData) {
+  return Object.fromEntries(
+    [...formData.entries()].filter(([k, v]) => typeof v === "string" && k !== "fotos" && k !== "sitio_web"),
+  ) as Record<string, string>;
+}

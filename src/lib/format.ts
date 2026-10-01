@@ -1,4 +1,4 @@
-import type { Estacion, Servicio } from "./types";
+import type { Servicio } from "./types";
 
 /** 1.5 → "1,5 UF" */
 export function formatoUF(valor: number) {
@@ -26,10 +26,3 @@ export function enlaceWhatsapp(telefono: string, mensaje?: string) {
 export function enlaceInstagram(usuario: string) {
   return `https://www.instagram.com/${usuario.replace(/^@/, "")}/`;
 }
-
-export const ESTACIONES: { id: Estacion; nombre: string; meses: string }[] = [
-  { id: "primavera", nombre: "Primavera", meses: "sep – nov" },
-  { id: "verano", nombre: "Verano", meses: "dic – feb" },
-  { id: "otono", nombre: "Otoño", meses: "mar – may" },
-  { id: "invierno", nombre: "Invierno", meses: "jun – ago" },
-];

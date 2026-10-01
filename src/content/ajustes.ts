@@ -1,8 +1,8 @@
 import type { Ajustes } from "@/lib/types";
 
 /**
- * Datos generales del sitio. En la Fase 2 pasan al documento "Ajustes del
- * sitio" de Sanity, para que se editen sin tocar código.
+ * Datos generales del sitio: contacto, textos de marca y avisos.
+ * Para cambiar el WhatsApp, el correo o Instagram, edita solo este archivo.
  */
 export const ajustes: Ajustes = {
   nombre: "Casa Polen & Arpa Studio",

@@ -8,9 +8,8 @@ import { servicios } from "@/content/servicios";
 import type { ServicioSlug } from "./types";
 
 /*
- * Capa de lectura de contenido. Los componentes solo usan estas funciones;
- * en la Fase 2 su implementación pasa a consultar Sanity (GROQ) sin cambiar
- * sus firmas.
+ * Capa de lectura de contenido. Los componentes solo usan estas funciones,
+ * así el origen del contenido puede cambiar sin tocar las páginas.
  */
 
 export async function getAjustes() {

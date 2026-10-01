@@ -2,8 +2,6 @@ import Image from "next/image";
 import { Boton } from "@/components/ui/Boton";
 import type { Proyecto } from "@/lib/types";
 import { AntesDespues } from "./AntesDespues";
-import { PaletaVegetal } from "./PaletaVegetal";
-import { TablaFloracion } from "./TablaFloracion";
 
 const NOMBRE_SERVICIO = {
   asesoria: "Asesoría",
@@ -19,7 +17,6 @@ export function DetalleProyecto({ proyecto, enModal = false }: { proyecto: Proye
   const meta = [proyecto.ubicacion, proyecto.anio, proyecto.servicio && NOMBRE_SERVICIO[proyecto.servicio]].filter(
     Boolean,
   );
-  const tieneFloracion = proyecto.paleta?.some((e) => e.floracion?.length);
   const Titulo = enModal ? "h2" : "h1";
   const nivelBloque = enModal ? "h3" : "h2";
 
@@ -49,27 +46,33 @@ export function DetalleProyecto({ proyecto, enModal = false }: { proyecto: Proye
       </div>
 
       {proyecto.galeria?.length ? (
-        <Bloque nivel={nivelBloque} titulo="Galería">
-          <ul className="columns-2 gap-4 md:columns-3 md:gap-6">
-            {proyecto.galeria.map((imagen) => (
-              <li key={imagen.src} className="mb-4 break-inside-avoid md:mb-6">
-                <Image
-                  src={imagen.src}
-                  alt={imagen.alt}
-                  width={imagen.width}
-                  height={imagen.height}
-                  sizes="(min-width: 768px) 33vw, 50vw"
-                  className="h-auto w-full bg-arena"
-                />
-              </li>
-            ))}
+        <Bloque nivel={nivelBloque} titulo="Fotos">
+          {/* Una foto ancha cada tres, el resto en pares verticales */}
+          <ul className="grid gap-4 md:grid-cols-2 md:gap-6">
+            {proyecto.galeria.map((imagen, i) => {
+              const ancha = i % 3 === 0;
+              return (
+                <li
+                  key={imagen.src}
+                  className={`relative overflow-hidden bg-arena ${ancha ? "aspect-[16/10] md:col-span-2" : "aspect-[4/5]"}`}
+                >
+                  <Image
+                    src={imagen.src}
+                    alt={imagen.alt}
+                    fill
+                    sizes={ancha ? "(min-width: 1280px) 1100px, 100vw" : "(min-width: 768px) 50vw, 100vw"}
+                    className="object-cover"
+                  />
+                </li>
+              );
+            })}
           </ul>
         </Bloque>
       ) : null}
 
       {proyecto.antesDespues?.length ? (
         <Bloque nivel={nivelBloque} titulo="Antes y después">
-          <div className="grid gap-10 md:grid-cols-2">
+          <div className={`grid gap-10 ${proyecto.antesDespues.length > 1 ? "md:grid-cols-2" : "max-w-4xl"}`}>
             {proyecto.antesDespues.map((par) => (
               <AntesDespues key={par.antes.src} par={par} sizes="(min-width: 768px) 50vw, 100vw" />
             ))}
@@ -97,17 +100,6 @@ export function DetalleProyecto({ proyecto, enModal = false }: { proyecto: Proye
         </Bloque>
       ) : null}
 
-      {proyecto.paleta?.length ? (
-        <Bloque nivel={nivelBloque} titulo="Paleta vegetal">
-          <PaletaVegetal especies={proyecto.paleta} />
-        </Bloque>
-      ) : null}
-
-      {tieneFloracion && proyecto.paleta ? (
-        <Bloque nivel={nivelBloque} titulo="Floración">
-          <TablaFloracion especies={proyecto.paleta} />
-        </Bloque>
-      ) : null}
 
       <div className="mt-20 flex flex-col items-start gap-6 border-t border-piedra pt-12 md:flex-row md:items-center md:justify-between">
         <p className="titulo text-2xl md:text-3xl">¿Imaginas algo así para tu jardín?</p>

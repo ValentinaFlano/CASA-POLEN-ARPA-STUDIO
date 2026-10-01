@@ -2,7 +2,7 @@ import type { Politica } from "@/lib/types";
 
 /**
  * Propuesta de política de reservas, cancelación y reprogramación.
- * Texto editable: en la Fase 2 pasa a Sanity.
+ * Texto editable: cambia aquí cualquier párrafo.
  */
 export const politicaReservas: Politica = {
   titulo: "Reservas, cancelación y reprogramación",

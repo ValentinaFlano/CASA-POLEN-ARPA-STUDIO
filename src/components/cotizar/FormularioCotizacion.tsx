@@ -2,19 +2,60 @@
 
 import Image from "next/image";
 import { useActionState, useEffect, useId, useRef, useState } from "react";
-import { enviarCotizacion } from "@/app/cotizar/actions";
+import { crearUrlsSubida, enviarCotizacion } from "@/app/cotizar/actions";
 import {
   MAX_FOTOS,
   MAX_MB_FOTO,
   PREFERENCIAS_CONTACTO,
+  TIPOS_FOTO,
   TIPOS_SERVICIO,
+  validarCotizacion,
+  valoresDeFormulario,
   type EstadoCotizacion,
 } from "@/lib/cotizacion";
 
 const inicial: EstadoCotizacion = { estado: "inicial" };
 
+/** Sube una foto con la URL firmada de Supabase (mismo formato que supabase-js). */
+async function subirFoto(url: string, archivo: File) {
+  const cuerpo = new FormData();
+  cuerpo.append("cacheControl", "3600");
+  cuerpo.append("", archivo);
+  try {
+    const respuesta = await fetch(url, { method: "PUT", body: cuerpo, headers: { "x-upsert": "false" } });
+    return respuesta.ok;
+  } catch {
+    return false;
+  }
+}
+
 export function FormularioCotizacion({ servicioInicial }: { servicioInicial?: string }) {
-  const [estado, accion, enviando] = useActionState(enviarCotizacion, inicial);
+  const fotosRef = useRef<File[]>([]);
+  const [paso, setPaso] = useState<"enviando" | "subiendo">("enviando");
+
+  const [estado, accion, enviando] = useActionState(
+    async (previo: EstadoCotizacion, formData: FormData): Promise<EstadoCotizacion> => {
+      // Validación en el navegador antes de subir fotos
+      const valores = valoresDeFormulario(formData);
+      const validacion = validarCotizacion(valores);
+      if (!validacion.ok) {
+        return { estado: "error", mensaje: "Revisa los campos marcados.", campos: validacion.campos, valores };
+      }
+
+      const archivos = fotosRef.current;
+      if (archivos.length) {
+        setPaso("subiendo");
+        const permiso = await crearUrlsSubida(archivos.map((a) => ({ tipo: a.type, tamano: a.size })));
+        if (permiso.ok) {
+          const resultados = await Promise.all(permiso.subidas.map((s, i) => subirFoto(s.url, archivos[i])));
+          permiso.subidas.forEach((s, i) => resultados[i] && formData.append("fotos", s.ruta));
+        }
+        setPaso("enviando");
+      }
+      return enviarCotizacion(previo, formData);
+    },
+    inicial,
+  );
   const errores = estado.estado === "error" ? (estado.campos ?? {}) : {};
   const valores = estado.estado === "error" ? (estado.valores ?? {}) : {};
   const resumenRef = useRef<HTMLDivElement>(null);
@@ -109,7 +150,7 @@ export function FormularioCotizacion({ servicioInicial }: { servicioInicial?: st
           />
         </div>
         <div className="md:col-span-2">
-          <SelectorFotos />
+          <SelectorFotos alCambiar={(archivos) => (fotosRef.current = archivos)} />
         </div>
         <div className="md:col-span-2">
           <Campo
@@ -168,7 +209,7 @@ export function FormularioCotizacion({ servicioInicial }: { servicioInicial?: st
           disabled={enviando}
           className="etiqueta inline-flex min-h-13 items-center justify-center rounded-full bg-bosque px-10 text-niebla transition-colors duration-500 hover:bg-noche disabled:opacity-60"
         >
-          {enviando ? "Enviando…" : "Enviar solicitud"}
+          {enviando ? (paso === "subiendo" ? "Subiendo fotos…" : "Enviando…") : "Enviar solicitud"}
         </button>
       </div>
     </form>
@@ -244,11 +285,11 @@ function Error({ id, mensaje }: { id: string; mensaje?: string }) {
 }
 
 /**
- * Selección de fotos con vista previa. El input no tiene `name`: en la Fase 2
- * las fotos se suben directo a Supabase Storage con URLs firmadas, sin pasar
- * por la acción del servidor (que tiene límite de tamaño).
+ * Selección de fotos con vista previa. El input no tiene `name`: las fotos se
+ * suben directo a Supabase Storage con URLs firmadas, sin pasar por la acción
+ * del servidor (que tiene límite de tamaño).
  */
-function SelectorFotos() {
+function SelectorFotos({ alCambiar }: { alCambiar: (archivos: File[]) => void }) {
   const id = useId();
   const [fotos, setFotos] = useState<{ url: string; nombre: string }[]>([]);
   const [aviso, setAviso] = useState("");
@@ -265,7 +306,7 @@ function SelectorFotos() {
         className="mt-2 flex min-h-28 cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-piedra bg-white/50 px-4 py-6 text-center text-sm text-gris transition-colors hover:border-oliva has-focus-visible:outline-2"
       >
         <span className="etiqueta text-carbon">Elegir fotos</span>
-        <span>JPG o PNG, máximo {MAX_MB_FOTO} MB cada una</span>
+        <span>JPG, PNG o HEIC, máximo {MAX_MB_FOTO} MB cada una</span>
         <input
           id={id}
           type="file"
@@ -275,12 +316,15 @@ function SelectorFotos() {
           aria-describedby={aviso ? `${id}-aviso` : undefined}
           onChange={(e) => {
             const archivos = [...(e.target.files ?? [])];
-            const validos = archivos.filter((a) => a.size <= MAX_MB_FOTO * 1024 * 1024).slice(0, MAX_FOTOS);
+            const validos = archivos
+              .filter((a) => TIPOS_FOTO.includes(a.type) && a.size <= MAX_MB_FOTO * 1024 * 1024)
+              .slice(0, MAX_FOTOS);
             setAviso(
               validos.length < archivos.length
-                ? `Algunas fotos no se agregaron: máximo ${MAX_FOTOS} fotos de hasta ${MAX_MB_FOTO} MB.`
+                ? `Algunas fotos no se agregaron: máximo ${MAX_FOTOS} fotos JPG, PNG, WEBP o HEIC de hasta ${MAX_MB_FOTO} MB.`
                 : "",
             );
+            alCambiar(validos);
             setFotos(validos.map((a) => ({ url: URL.createObjectURL(a), nombre: a.name })));
           }}
         />
