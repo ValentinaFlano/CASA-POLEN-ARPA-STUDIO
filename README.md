@@ -62,6 +62,8 @@ Cada proyecto muestra solo lo que tenga: fotos, antes y después, y plano o rend
 
 ## Cotizaciones (Supabase + Resend)
 
+> **Estado actual: desactivado.** Mientras la variable `COTIZACION_EN_LINEA` no sea `true`, la página `/cotizar` invita a cotizar por WhatsApp o correo y el formulario no recibe envíos. Para activarlo: completa la configuración de abajo, agrega `COTIZACION_EN_LINEA=true` en Vercel y vuelve a desplegar.
+
 Cuando alguien envía el formulario de `/cotizar`:
 
 1. Las fotos del terreno suben directo a Supabase Storage (bucket privado `fotos-cotizaciones`).

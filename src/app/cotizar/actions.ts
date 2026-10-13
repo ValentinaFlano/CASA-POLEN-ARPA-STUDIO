@@ -10,6 +10,7 @@ import {
   type EstadoCotizacion,
 } from "@/lib/cotizacion";
 import { correosEquipo, enviarCorreo } from "@/lib/servidor/correo";
+import { cotizacionEnLinea } from "@/lib/servidor/funciones";
 import { BUCKET_FOTOS, supabaseAdmin } from "@/lib/servidor/supabase";
 
 const EXTENSIONES: Record<string, string> = {
@@ -45,6 +46,7 @@ export type SubidaFoto = { ruta: string; url: string };
 export async function crearUrlsSubida(
   archivos: { tipo: string; tamano: number }[],
 ): Promise<{ ok: true; subidas: SubidaFoto[] } | { ok: false }> {
+  if (!cotizacionEnLinea()) return { ok: false };
   const supabase = supabaseAdmin();
   if (!supabase) return { ok: false };
   if (
@@ -74,6 +76,10 @@ export async function crearUrlsSubida(
  * avisa por correo al equipo y al cliente. No entrega precio.
  */
 export async function enviarCotizacion(_previo: EstadoCotizacion, formData: FormData): Promise<EstadoCotizacion> {
+  if (!cotizacionEnLinea()) {
+    return { estado: "error", mensaje: "La cotización en línea aún no está disponible. Escríbenos por WhatsApp." };
+  }
+
   // Campo trampa: los bots lo completan, las personas no lo ven.
   if (formData.get("sitio_web")) return { estado: "enviada", nombre: "" };
 
