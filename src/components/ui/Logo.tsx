@@ -3,14 +3,11 @@
  * del sello circular de Casa Polen cuando esté disponible.
  */
 export function Logo({ className = "" }: { className?: string }) {
+  const linea = "block text-lg font-normal uppercase tracking-[0.14em] md:text-xl";
   return (
-    <span className={`flex flex-col leading-none ${className}`}>
-      <span className="text-[0.95rem] font-normal uppercase tracking-[0.14em] md:text-base">
-        Casa Polen
-      </span>
-      <span className="mt-1 text-[0.62rem] font-semibold uppercase tracking-[0.32em] opacity-75">
-        &amp; Arpa Studio
-      </span>
+    <span className={`flex flex-col leading-[1.15] ${className}`}>
+      <span className={linea}>Casa Polen</span>
+      <span className={linea}>&amp; Arpa Studio</span>
     </span>
   );
 }
