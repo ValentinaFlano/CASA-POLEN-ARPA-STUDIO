@@ -43,6 +43,8 @@ export type Servicio = {
   descripcion: string;
   incluye: string[];
   nota?: string;
+  /** Oferta destacada del servicio, ej. pack semestral de mantención. */
+  pack?: { texto: string; detalle: string };
   precio: {
     desdeUF: number;
     /** Ej. "Visita inicial". Se antepone a "desde X UF". */

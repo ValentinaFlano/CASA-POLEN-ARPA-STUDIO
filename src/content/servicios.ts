@@ -37,6 +37,11 @@ export const servicios: Servicio[] = [
       "Control de maleza y cuidado estacional.",
     ],
     nota: "Otoño e invierno son la época ideal para una mantención profunda.",
+    pack: {
+      texto: "Compra un pack de mantención semestral (invierno y verano)",
+      detalle:
+        "Dos mantenciones profundas al año: una en invierno, para preparar el jardín y aprovechar la época de lluvias, y otra en verano, para ajustar el riego y cuidarlo en los meses de más calor.",
+    },
     precio: { desdeUF: 4 },
     imagen: {
       src: "/demo/proyectos/cactaceas/detalle-2.jpg",

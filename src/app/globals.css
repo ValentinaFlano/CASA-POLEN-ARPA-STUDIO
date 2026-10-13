@@ -123,6 +123,17 @@
   }
 }
 
+@keyframes aparecer-modal {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @utility linea-scroll {
   animation: linea-scroll 2.4s var(--ease-organico) infinite;
 }

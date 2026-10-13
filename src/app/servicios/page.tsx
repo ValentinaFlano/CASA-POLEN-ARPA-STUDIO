@@ -70,6 +70,12 @@ export default async function Servicios() {
                 {servicio.nota && (
                   <p className="mt-6 rounded-2xl bg-salvia/25 px-5 py-4 leading-relaxed text-bosque">{servicio.nota}</p>
                 )}
+                {servicio.pack && (
+                  <div className="mt-4 rounded-2xl border border-salvia px-5 py-4 text-bosque">
+                    <p className="font-semibold">{servicio.pack.texto}</p>
+                    <p className="mt-1.5 leading-relaxed">{servicio.pack.detalle}</p>
+                  </div>
+                )}
 
                 <div className="mt-10 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
                   <p className="titulo text-2xl">{precioServicio(servicio)}</p>

@@ -44,7 +44,7 @@ export default async function Inicio() {
               {[
                 ["Bajo consumo hídrico", "Especies y riego pensados para la escasez de agua."],
                 ["Biodiversidad", "Jardines que atraen polinizadores y fauna local."],
-                ["Adaptado al lugar", "Diseño según el suelo y el clima de cada terreno.*"],
+                ["Adaptado al lugar", "Diseño según el suelo y el clima de cada terreno."],
               ].map(([titulo, texto]) => (
                 <div key={titulo}>
                   <h3 className="etiqueta">{titulo}</h3>
@@ -52,10 +52,6 @@ export default async function Inicio() {
                 </div>
               ))}
             </Aparecer>
-            <p className="mt-8 text-sm text-gris">
-              *Trabajamos según las condiciones edafoclimáticas: las características del suelo y del clima de cada
-              zona.
-            </p>
           </div>
         </div>
       </section>
@@ -64,7 +60,7 @@ export default async function Inicio() {
       <section aria-labelledby="servicios-titulo" className="bg-arena/60 py-24 md:py-36">
         <div className="contenedor">
           <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
-            <EncabezadoSeccion etiqueta="Qué hacemos" titulo="Servicios" />
+            <EncabezadoSeccion id="servicios-titulo" etiqueta="Qué hacemos" titulo="Servicios" />
             <Aparecer>
               <p className="max-w-sm text-sm text-gris">{ajustes.notaPrecios}</p>
             </Aparecer>
@@ -72,7 +68,7 @@ export default async function Inicio() {
           <ul className="mt-14 grid gap-14 sm:grid-cols-2 md:mt-20 lg:grid-cols-3 lg:gap-10">
             {servicios.map((servicio, i) => (
               <Aparecer as="li" key={servicio.slug} retraso={i * 0.12}>
-                <TarjetaServicio servicio={servicio} numero={i + 1} />
+                <TarjetaServicio servicio={servicio} numero={i + 1} notaPrecios={ajustes.notaPrecios} />
               </Aparecer>
             ))}
           </ul>
@@ -82,7 +78,14 @@ export default async function Inicio() {
       {/* Proyectos */}
       <section aria-labelledby="proyectos-titulo" className="contenedor py-24 md:py-40">
         <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
-          <EncabezadoSeccion etiqueta="Proyectos realizados" titulo="Paisajes que ahorran agua" />
+          <Aparecer className="max-w-4xl">
+            <h2 id="proyectos-titulo" className="titulo text-[clamp(2.1rem,5vw,4.25rem)]">
+              Proyectos realizados
+            </h2>
+            <p className="mt-4 text-xl font-light text-carbon/80 md:text-2xl">
+              Paisajes responsables con el medio ambiente
+            </p>
+          </Aparecer>
           <Aparecer>
             <Boton href="/proyectos" variante="texto">
               Ver todos los proyectos <Flecha />
