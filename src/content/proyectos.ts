@@ -42,6 +42,7 @@ export const proyectos: Proyecto[] = [
       img("/proyectos/jardin-de-cactaceas/aeonium.jpg", "Rosetas de Aeonium verde sobre piedra de río", 685, 913),
       img("/proyectos/jardin-de-cactaceas/anigozanthos.jpg", "Flores rosadas de Anigozanthos entre cactus columnares y piedra de río", 685, 913),
       img("/proyectos/jardin-de-cactaceas/agave.jpg", "Agave junto a una roca, con cactus columnares y Aeonium al fondo", 685, 913),
+      img("/proyectos/jardin-de-cactaceas/aeonium-muro.jpg", "Aeonium en primer plano y Anigozanthos en flor frente al muro de piedra", 685, 913),
     ],
     antesDespues: [
       {
