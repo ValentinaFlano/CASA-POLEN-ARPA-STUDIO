@@ -17,6 +17,20 @@ const img = (ruta: string, alt: string, width: number, height: number): Imagen =
 
 export const proyectos: Proyecto[] = [
   {
+    slug: "spa-utah",
+    nombre: "Spa en Utah",
+    ubicacion: "Utah, EE. UU.",
+    resumen:
+      "Paisajismo para un spa en el paisaje árido de Utah. Rocas, gramíneas y especies de clima seco integran el edificio y su cubierta verde con el cerro, con un jardín que necesita muy poco riego.",
+    servicio: "diseno-construccion",
+    destacado: true,
+    portada: img("/proyectos/spa-utah/terraza.jpg", "Render de la terraza del spa bajo vigas de madera, junto a rocas y gramíneas", 2000, 1401),
+    galeria: [
+      img("/proyectos/spa-utah/vista-general.jpg", "Render del spa con cubierta verde integrado al cerro, rodeado de agaves y arbustos", 2000, 891),
+      img("/proyectos/spa-utah/piscina.jpg", "Render de la piscina y el jardín de flores silvestres frente a las montañas", 2000, 985),
+    ],
+  },
+  {
     slug: "jardin-de-cactaceas",
     nombre: "Jardín de cactáceas",
     resumen:

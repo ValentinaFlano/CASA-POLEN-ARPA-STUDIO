@@ -46,15 +46,16 @@ export function DetalleProyecto({ proyecto, enModal = false }: { proyecto: Proye
       </div>
 
       {proyecto.galeria?.length ? (
-        <Bloque nivel={nivelBloque} titulo="Fotos">
-          {/* Una foto ancha cada tres, el resto en pares verticales */}
+        <Bloque nivel={nivelBloque} titulo="Imágenes">
+          {/* Las fotos horizontales ocupan todo el ancho con su proporción; las verticales van de a dos */}
           <ul className="grid gap-4 md:grid-cols-2 md:gap-6">
-            {proyecto.galeria.map((imagen, i) => {
-              const ancha = i % 3 === 0;
+            {proyecto.galeria.map((imagen) => {
+              const ancha = imagen.width >= imagen.height * 1.15;
               return (
                 <li
                   key={imagen.src}
-                  className={`relative overflow-hidden bg-arena ${ancha ? "aspect-[16/10] md:col-span-2" : "aspect-[4/5]"}`}
+                  className={`relative overflow-hidden bg-arena ${ancha ? "md:col-span-2" : "aspect-[4/5]"}`}
+                  style={ancha ? { aspectRatio: `${imagen.width} / ${imagen.height}` } : undefined}
                 >
                   <Image
                     src={imagen.src}
